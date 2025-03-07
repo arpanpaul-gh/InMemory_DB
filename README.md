@@ -60,11 +60,12 @@ Run the client using the following command:
 python client.py  
 
 # Future Enhancements
-Add support for more data types (e.g., lists, sets, hashes).  
-Implement replication and clustering for high availability.  
-Implement pub-sub architecture.  
-Add authentication and security features.  
-Improve performance with asynchronous I/O.  
+1. Implement concurrency with the help of asyncio.  
+2. Add support for more data types (e.g., lists, sets, hashes).  
+3. Implement pub-sub architecture.  
+4. Add authentication and security features.  
+5. Improve performance with asynchronous I/O.  
+6. Implement replication and clustering for high availability.
 
 # Contributing
 Contributions are welcome! If you'd like to contribute, please:  
