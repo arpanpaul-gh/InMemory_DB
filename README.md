@@ -50,9 +50,6 @@ Persistence:
 The database state is saved to a JSON file (persistence.json) whenever a change is made.  
 On server startup, the database is loaded from the file.  
 
-# Clone the repository:
-git clone https://github.com/arpanpaul-gh/in-memory-db.git
-
 # Start the Server
 Run the server using the following command:  
 python network.py  
