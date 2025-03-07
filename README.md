@@ -35,3 +35,43 @@ storage.py: Persistence layer that saves and loads data to/from a JSON file.
 ttl.py: TTL management for expiring keys.  
 client.py: Command-line client to interact with the database.  
 config.py: Configuration file for server host, port, cache capacity, and storage file.  
+
+# How It Works
+Server:  
+The server listens for incoming client connections on a specified host and port.  
+It processes commands (set, get, set_with_ttl, delete) and updates the in-memory database.  
+Expired keys are automatically removed from memory and the persistent storage file.  
+
+Client:  
+The client connects to the server and sends commands.  
+Users can interact with the database using a simple command-line interface.  
+
+Persistence:  
+The database state is saved to a JSON file (persistence.json) whenever a change is made.  
+On server startup, the database is loaded from the file.  
+
+# Clone the repository:
+git clone https://github.com/arpanpaul-gh/in-memory-db.git
+
+# Start the Server
+Run the server using the following command:  
+python network.py  
+The server will start listening on 127.0.0.1:65432.  
+
+#  Start the Client
+Run the client using the following command:  
+python client.py  
+
+# Future Enhancements
+Add support for more data types (e.g., lists, sets, hashes).  
+Implement replication and clustering for high availability.  
+Implement pub-sub architecture.  
+Add authentication and security features.  
+Improve performance with asynchronous I/O.  
+
+# Contributing
+Contributions are welcome! If you'd like to contribute, please:  
+
+Fork the repository.  
+Create a new branch for your feature or bugfix.  
+Submit a pull request.  
