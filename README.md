@@ -28,13 +28,13 @@ Supports commands like set, get, set_with_ttl, and delete.
 
 # Project Structure
 
-db.py: Core in-memory database implementation with key-value storage and TTL support.  
-cache.py: LRU cache implementation for efficient key-value storage.  
-network.py: TCP server that handles client connections and processes commands.  
-storage.py: Persistence layer that saves and loads data to/from a JSON file.  
-ttl.py: TTL management for expiring keys.  
-client.py: Command-line client to interact with the database.  
-config.py: Configuration file for server host, port, cache capacity, and storage file.  
+1. db.py: Core in-memory database implementation with key-value storage and TTL support.  
+2. cache.py: LRU cache implementation for efficient key-value storage.  
+3. network.py: TCP server that handles client connections and processes commands.  
+4. storage.py: Persistence layer that saves and loads data to/from a JSON file.  
+5. ttl.py: TTL management for expiring keys.  
+6. client.py: Command-line client to interact with the database.  
+7. config.py: Configuration file for server host, port, cache capacity, and storage file.  
 
 # How It Works
 Server:  
