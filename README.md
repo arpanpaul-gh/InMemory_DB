@@ -76,12 +76,3 @@ Submit a pull request.
 
 # Flow
 cache -> inmemoryDB -> persistence.json
-
-# diff b/w redis and this
-
-1. Replication:
-Redis supports replication, allowing you to create multiple copies of your data for high availability and fault tolerance. 
-2. Clustering:
-Redis Cluster provides automatic partitioning and sharding, enabling you to scale Redis horizontally. 
-3. Sentinel:
-Redis Sentinel monitors Redis instances and automatically handles failovers, ensuring high availability. 
