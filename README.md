@@ -148,8 +148,8 @@ The system also publishes database changes to the `db_updates` channel.
 - Client: Type `exit` or press Ctrl+C
 
 ## Future Enhancements
-Implement concurrency with the help of asyncio.
-Add support for more data types (e.g., lists, sets, hashes).
-Add authentication and security features.
-Improve performance with asynchronous I/O.
-Implement replication and clustering for high availability.
+- Implement concurrency with the help of asyncio.
+- Add support for more data types (e.g., lists, sets, hashes).
+- Add authentication and security features.
+- Improve performance with asynchronous I/O.
+- Implement replication and clustering for high availability.
