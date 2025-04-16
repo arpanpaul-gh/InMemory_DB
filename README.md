@@ -1,78 +1,155 @@
-# InMemory_DB
-In-Memory Database This project is a simple in-memory database inspired by Redis, with functionalities such as key-value storage, TTL (Time-To-Live) for keys, LRU (Least Recently Used) caching, and persistence to a JSON file. It is built using Python and consists of modular components that work together to provide a lightweight database system.
+# In-Memory Database with PubSub
 
-# Features
-1. Key-Value Storage:
-Store and retrieve key-value pairs in memory.
-Supports basic operations: set, get, and delete.
+A lightweight, multi-featured in-memory database with built-in publish/subscribe functionality, implemented in Python.
 
-2. TTL (Time-To-Live):
-Set an expiration time for keys.
-Automatically removes expired keys from memory and persistent storage.
+## Features
 
-3. LRU Cache:
-Implements a Least Recently Used (LRU) cache with a configurable capacity.
-Evicts the least recently used item when the cache is full.
+- **In-Memory Key-Value Store**: Fast read and write operations
+- **Time-To-Live (TTL)**: Automatically expire keys after a specific duration
+- **LRU Cache**: Least Recently Used cache implementation for performance
+- **Persistence**: Data automatically saved to disk to prevent data loss
+- **Publish/Subscribe**: Real-time messaging system between clients
+- **TCP Network Protocol**: Client-server architecture over TCP sockets
+- **Multi-threading**: Handles multiple client connections concurrently
 
-4. Persistence:
-Saves the in-memory database to a JSON file (db.json).
-Loads data from the file when the server starts.
+## Architecture
 
-5. TCP Server:
-A simple TCP server listens for incoming connections and processes commands.
-Supports multiple clients connecting simultaneously.
+The system consists of two main components:
 
-6. Client Interface:
-A command-line client allows users to interact with the database.
-Supports commands like set, get, set_with_ttl, and delete.
+1. **Server**: Hosts the in-memory database and handles client connections
+2. **Client**: Provides a command-line interface to interact with the server
 
-# Project Structure
+### Server Components
 
-1. db.py: Core in-memory database implementation with key-value storage and TTL support.  
-2. cache.py: LRU cache implementation for efficient key-value storage.  
-3. network.py: TCP server that handles client connections and processes commands.  
-4. storage.py: Persistence layer that saves and loads data to/from a JSON file.  
-5. ttl.py: TTL management for expiring keys.  
-6. client.py: Command-line client to interact with the database.  
-7. config.py: Configuration file for server host, port, cache capacity, and storage file.  
+- `main-server.py`: Entry point that initializes the server
+- `network.py`: TCP socket server implementation
+- `db.py`: In-memory database implementation
+- `cache.py`: LRU cache implementation
+- `storage.py`: Persistence functionality
+- `pubsub.py`: Publish/Subscribe system
+- `ttl.py`: Time-To-Live functionality
+- `config.py`: Configuration settings
 
-# How It Works
-Server:  
-The server listens for incoming client connections on a specified host and port.  
-It processes commands (set, get, set_with_ttl, delete) and updates the in-memory database.  
-Expired keys are automatically removed from memory and the persistent storage file.  
+### Client Components
 
-Client:  
-The client connects to the server and sends commands.  
-Users can interact with the database using a simple command-line interface.  
+- `client.py`: TCP client with command-line interface
 
-Persistence:  
-The database state is saved to a JSON file (persistence.json) whenever a change is made.  
-On server startup, the database is loaded from the file.  
+## Installation
 
-# Start the Server
-Run the server using the following command:  
-python network.py  
-The server will start listening on 127.0.0.1:65432.  
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/in-memory-db.git
+   cd in-memory-db
+   ```
 
-#  Start the Client
-Run the client using the following command:  
-python client.py  
+2. No external dependencies are required (uses Python standard library)
 
-# Future Enhancements
-1. Implement concurrency with the help of asyncio.  
-2. Add support for more data types (e.g., lists, sets, hashes).  
-3. Implement pub-sub architecture.  
-4. Add authentication and security features.  
-5. Improve performance with asynchronous I/O.  
-6. Implement replication and clustering for high availability.
+## Usage
 
-# Contributing
-Contributions are welcome! If you'd like to contribute, please:  
+### Starting the Server
 
-Fork the repository.  
-Create a new branch for your feature or bugfix.  
-Submit a pull request.  
+Run the server using:
 
-# Flow
-cache -> inmemoryDB -> persistence.json
+```
+python main-server.py
+```
+
+The server will start listening on the configured host and port (default: 127.0.0.1:65432).
+
+### Using the Client
+
+Run the client using:
+
+```
+python client.py
+```
+
+This will connect to the server and provide an interactive command prompt.
+
+### Available Commands
+
+#### Database Operations
+
+- `get <key>`: Retrieve value for a key
+- `set <key> <value>`: Store a key-value pair
+- `set_with_ttl <key> <value> <ttl>`: Store a key-value pair with expiration time in seconds
+- `delete <key>`: Remove a key-value pair
+- `keys`: List all keys in the database
+
+#### PubSub Operations
+
+- `subscribe <channel>`: Subscribe to receive messages from a channel
+- `unsubscribe`: Stop listening for messages
+- `publish <channel> <message>`: Send a message to all subscribers of a channel
+- `list_channels`: Show all active channels
+- `list_subscribers <channel>`: Show subscriber count for a channel
+
+#### General Commands
+
+- `help`: Display available commands
+- `exit`: Close the client
+
+## Configuration
+
+You can modify the settings in `config.py`:
+
+- `SERVER_HOST`: Server hostname (default: '127.0.0.1')
+- `SERVER_PORT`: Server port number (default: 65432)
+- `CACHE_CAPACITY`: Maximum number of items in the LRU cache (default: 100)
+- `STORAGE_FILE`: File for data persistence (default: 'persistence.json')
+- `DEFAULT_TTL`: Default time-to-live in seconds (default: 3600)
+
+## Example Usage
+
+```
+> subscribe notifications
+Subscribed to channel: notifications
+
+> publish notifications "Hello World"
+{'result': 'OK'}
+
+Message from 'notifications': Hello World
+
+> set username john_doe
+{'result': 'OK'}
+
+> get username
+{'result': 'john_doe', 'ttl_remaining': None}
+
+> set_with_ttl temp_token abc123 60
+Setting temp_token = abc123 with TTL of 60 seconds
+{'result': 'OK', 'ttl_set': 60}
+
+> keys
+{'result': ['username', 'temp_token']}
+```
+
+## Data Persistence
+
+The database automatically saves data to disk at regular intervals (default: every 60 seconds) and on graceful shutdown. The data is stored in `persistence.json`.
+
+## Auto-Expiry with TTL
+
+Keys with TTL are automatically removed when they expire. The server periodically checks for expired keys and removes them.
+
+## PubSub System
+
+The PubSub system allows clients to:
+
+1. Subscribe to channels
+2. Publish messages to channels
+3. Receive real-time notifications
+
+The system also publishes database changes to the `db_updates` channel.
+
+## Shutting Down
+
+- Server: Press Ctrl+C for graceful shutdown
+- Client: Type `exit` or press Ctrl+C
+
+## Future Enhancements
+Implement concurrency with the help of asyncio.
+Add support for more data types (e.g., lists, sets, hashes).
+Add authentication and security features.
+Improve performance with asynchronous I/O.
+Implement replication and clustering for high availability.
